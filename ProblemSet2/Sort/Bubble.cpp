@@ -44,8 +44,8 @@ int main(){
     cin>>tam;
 	int  miArray[tam];
 	
-	rellenarArray(miArray,tam);
-	ordenarArray(miArray,tam);
+	rellenarArray(miArray,tam); 
+	ordenarArray(miArray,tam); //bubble
 	mostrarArray(miArray,tam);
 	return 0;
 }
