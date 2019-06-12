@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+
+template<typename T>
+class Nodo
+{
+public:
+    T dato;
+    Nodo * next;
+public:
+    Nodo(T x) {
+        dato=x;
+        next=NULL;
+    }
+    void imprimir(){
+        cout<<dato<<"-->";
+    }
+};
+
+
+template<typename T>
+class LinkedList{
+private:
+    Nodo<T>* head=NULL;
+    Nodo<T>* m_nodes;
+public: 
+    LinkedList(){
+
+    }
+    void add(T a){
+        Nodo<T> *nuevo = new Nodo<T>(a);
+    }
+    void insert(){
+        
+    }
+};
+
+int main()
+{
+    LinkedList<int> lst;
+    return 0;
+}
