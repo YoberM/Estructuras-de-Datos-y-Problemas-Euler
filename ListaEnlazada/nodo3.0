@@ -1,0 +1,173 @@
+#include <iostream>
+using namespace std;
+template <class T>
+class nodo{
+public:
+	T dato;
+	nodo<T> *sig=NULL;
+	nodo<T> *ant=NULL;
+public:
+	nodo(){
+	}
+	nodo(T a){
+		dato = a;
+	}
+	void Set(T a){
+		dato=a;
+	} 
+	void Setsig(nodo<T> *nsig){
+		sig = nsig;
+	}
+	void Setant(nodo<T> *nant){
+		ant = nant;
+	}
+	T Get(){
+		return dato;
+	}
+	nodo<T>& Getsig(){
+		return *sig;
+	}
+	nodo<T>& Getant(){
+		return *ant;
+	}
+};
+
+template <class T>
+class nodoLinked{
+	nodo<T> *head=NULL;
+	nodo<T> *tail=NULL;
+	nodo<int> tam;
+	nodo<T> *iterador=NULL;
+public:
+	nodoLinked(){
+		tam.Set(0);
+	}
+	nodoLinked(nodo<T> *nuevo){
+		head=nuevo;
+		tail=nuevo;
+		tam.Set(1);
+		iterador=nuevo;
+	}
+	nodoLinked(T a){
+		nodo<T> *nuevo = new nodo<T>(a);
+		head=nuevo;
+		tail=nuevo;
+		tam.Set(1);
+		iterador=nuevo;
+	}
+	void add(T a){
+		if(tam.Get()==0){
+			nodo<T> *nuevo = new nodo<T>(a);
+			head = nuevo ;
+			tail = nuevo;
+			iterador = nuevo;
+			tam.Set(1);
+		}
+		else{
+			iterador=tail;
+			nodo<T> *nuevo = new nodo<T>(a);
+			nuevo->Setant(tail);
+			tail->Setsig(nuevo);
+			tail = nuevo;
+			tam.Set(tam.Get()+1);
+		}
+		cout<<tam.Get()<<" <- tam"<<endl;
+	}
+	void insert(int pos,T a){
+		if(pos==1){//cuando la posicion sea 1
+			iterador=head;
+			nodo<T> *nuevo = new nodo<T>(a);
+			head->Getant()=*nuevo;
+			nuevo->Getsig()=*head;
+			head = nuevo;
+		}
+		//cuando sea mayor que el tamaño se tomara como un simple add 
+		else if(pos > tam.Get()){
+			add(a);
+		}
+		//cuando sea mayor que 1 y menor que el tamaño + 1
+		else {
+			iterador=head;
+			cout<<"gaaa";
+			for(int i=0;i<pos-1 ;i++){
+				cout<<"gaaax2";
+				cout<<iterador->Getsig().Get();
+				*iterador=iterador->Getsig();
+			}
+			nodo<T> *nuevo = new nodo<T>(a);
+			cout<<"gaa ->"<<iterador->Getant().Get();
+			iterador->Getant().Setsig(nuevo);
+			cout<<"gaa ->"<<iterador->Getant().Get();
+			iterador->Setant(nuevo);
+		}
+	}
+	void borrar(int pos){
+		if(pos==1){
+			if(tam.Get()==1){
+				delete head;
+				head = NULL;
+				iterador = NULL;
+				tail = NULL;
+				tam.Set(0);
+			}
+			else {
+				iterador = head;
+				head = head.Getsig();
+				delete iterador;
+				iterador = head;
+			}
+		}
+		else if(pos==tam.Get()){
+			iterador = tail;
+			tail = tail.Getant();
+			delete iterador;
+			iterador = tail;
+		}
+		else{
+			iterador = head;
+			for(int i=1;i<pos+1;i++){
+				iterador=iterador->Getsig();
+			}
+			iterador->Getant();
+			iterador->Getant()->Getsig()=iterador->Getsig();
+			iterador->Getsig()->Getant()=iterador->Getant();
+			delete iterador;
+			iterador = head;
+		}
+	}
+	void Mostrar(){
+		iterador=head;
+		for(int i=0;i<tam.Get();i++){
+			if(i==0){
+				cout<<iterador->Get()<<" -> ";
+			}
+			else if(i==tam.Get()-1){
+				cout<<" <- "<<iterador->Get()<<" -> NULL";
+			}
+			else{
+				cout<<" <- "<<iterador->Get()<<" -> ";
+			}
+			if(i!=tam.Get()-1){
+				*iterador=iterador->Getsig();
+			}
+		}
+		cout<<endl;
+	}
+
+};
+
+
+
+typedef int tipo;
+
+int main(){
+	tipo a = 5;
+	nodoLinked<tipo> lista(a);
+	lista.add(6);
+	lista.add(7);
+	lista.add(8);
+	lista.Mostrar();
+	lista.insert(2,9);
+	lista.Mostrar();
+	return 0;
+}
